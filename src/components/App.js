@@ -10,7 +10,8 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [page, setPage] = useState(1)
-  const [qidata, setQidata] = useState([])
+  const [hasmore, setHasMore] = useState(false)
+  const [qidata, setQidata] = useState(null)
 
   useEffect(() => {
     setLoading(true)
@@ -22,8 +23,11 @@ function App() {
     .then(result => {
         setData(prevdata => {
             //return [...new Set([...prevdata, ...result.data.items.map(item => item)])]
-            return prevdata.concat(result.data.items)
+            return prevdata.concat(result.data.items.map(item => item))
+            //console.log(prevdata.concat(result.data.items.map(item => item))
+            
         })
+        setHasMore(result.data.items.length > 0)
         setLoading(false)
     })
     .catch(e => {
@@ -34,42 +38,41 @@ function App() {
 
   console.log(data)
 
-  const observer = useRef()
-  const lastQuestion = useCallback(node => {
-      if(loading) {
-          return 
+  const observer = useRef(null)
+
+  const lastBookElementRef = useCallback(node => {
+    console.log('tinku')
+    if (loading) return
+    if (observer.current) observer.current.disconnect()
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasmore) {
+        setPage(page => page + 1)
       }
-      if(observer.current) {
-          observer.current.disconnect()
-      }
-      observer.current = new IntersectionObserver(entries => {
-          if(entries[0].isIntersecting) {
-              setPage(prevPage => prevPage+1)
-          }
-      })
-      if(node) {
-          observer.current.observe(node)
-      }
-  },[loading])
+    })
+    if (node) observer.current.observe(node)
+    console.log(node)
+  }, [loading, hasmore])
+
 
   const getQuestionId = (id) => {
-    setQidata((qidata) => data.filter(item => item.question_id === id))
+    setQidata(data.filter(item => item.question_id === id))
   }
 
   return (
-    <div className="App">
+    <>
       <Search />
       <Route 
          exact path='/'
          render={() => (
           <div>
           {
-            data.map((item, index) => {
-                if(item.length === index+1) {
-                    return <Question ref={lastQuestion} item={item} getQuestionId={getQuestionId} key={item.owner.user_id}/>
+            data.length > 0 && data.map((item, index) => {
+                if(data.length === index+1) {
+                  return <Question ref={lastBookElementRef} item={item} getQuestionId={getQuestionId} key={item.owner.user_id}/>
                 } else {
-                    return <Question item={item} getQuestionId={getQuestionId} key={item.owner.user_id}/>
+                  return <Question item={item} getQuestionId={getQuestionId} />
                 }
+                //return <Question item={item} getQuestionId={getQuestionId} />
             })
             }
             <div>{loading && 'Loading...'}</div>
@@ -77,13 +80,14 @@ function App() {
           </div>
          )}
       />
-      <Route 
-        path={'/questions/' + qidata.question_id}
+      
+      {/* <Route 
+        path={'/questions/' + qidata}
         render={() => (
           <QuestionModel qidata={qidata}/>
         )}
-      />
-    </div>
+      /> */}
+    </>
   );
   }
 
