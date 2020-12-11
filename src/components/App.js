@@ -23,11 +23,8 @@ function App() {
     })
     .then(result => {
         setData(prevdata => {
-            //return [...new Set([...prevdata, ...result.data.items.map(item => item)])]
             return prevdata.concat(result.data.items.map(item => item))
-            //console.log(prevdata.concat(result.data.items.map(item => item))
         })
-        //setHasMore(result.data.items.length > 0)
         setLoading(false)
     })
     .catch(e => {
