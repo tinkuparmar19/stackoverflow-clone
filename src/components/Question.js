@@ -1,28 +1,31 @@
 import React from 'react'
-import 'materialize-css';
-import { Button, Card, Row, Col } from 'react-materialize';
 
 function Question(props) {
-    //console.log(props.item)
     const {item} = props
-    console.log(item)
-
+    
     return (
-        <div className='container question'>
-            <div className='card'>
-                <div>
-                    <div>
-                        <img src={item.owner.profile_image} className='rounded float-start'/>
-                    </div>
+        <div onClick={props.getQuestionId(item.question_id)}>
+            <div className='question'>
+                <div className='image-name'>
+                    <img src={item.owner.profile_image} className='question-image'alt=''/>
                     <p>{item.owner.display_name}</p>
                 </div>
-                <div className='card-body'>
-                    <p>{item.title}</p>
+                <div className='title-tags'>
+                    <p className='title'>{item.title}</p>
+                    <div className='question-tags'>
                     {
                         item.tags.map(tag => {
-                            <p>{tag}</p>
+                            return (
+                                <p className='tag'>{tag}</p>
+                            )
                         })
                     }
+                    </div>
+                </div>
+                <div className='question-upvote'>
+                    <i className="fas fa-caret-up"></i>
+                    <p>upvote</p>
+                    <p>0</p>
                 </div>
             </div>
         </div>
