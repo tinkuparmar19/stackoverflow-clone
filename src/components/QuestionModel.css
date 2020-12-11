@@ -1,0 +1,11 @@
+.model {
+    max-width: 60%;
+    margin: 50px auto;
+    background-color: aliceblue;
+    padding: 20px;
+}
+
+i {
+    height: 20px !important;
+    width: 20px !important;
+}

@@ -1,10 +1,9 @@
 import React from 'react'
+import './Question.css'
 
 function Question(props) {
     const {item} = props
-    
     return (
-        <div onClick={props.getQuestionId(item.question_id)}>
             <div className='question'>
                 <div className='image-name'>
                     <img src={item.owner.profile_image} className='question-image'alt=''/>
@@ -16,7 +15,7 @@ function Question(props) {
                     {
                         item.tags.map(tag => {
                             return (
-                                <p className='tag'>{tag}</p>
+                                <p className='tag'>#{tag}</p>
                             )
                         })
                     }
@@ -28,7 +27,6 @@ function Question(props) {
                     <p>0</p>
                 </div>
             </div>
-        </div>
     )
 }
 
