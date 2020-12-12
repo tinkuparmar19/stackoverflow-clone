@@ -38,7 +38,7 @@ function QuestionModel(props) {
                         })
                     }
                     </div>
-                    <a href={item.link} target='_blank' rel='noopener' type='button' className='stack-link btn btn-primary mx-auto'>View In Stackoverflow</a>
+                    <a href={item.link} target='_blank' rel='noopener' rel="noreferrer" type='button' className='stack-link btn btn-primary mx-auto'>View In Stackoverflow</a>
                 </div>
                 <div className='d-flex justify-content-start'>
                     <Link to='/'><i className="fas fa-times-circle cross"></i></Link>
