@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import {DebounceInput} from 'react-debounce-input'
 import { Link, Route } from 'react-router-dom';
 import Question from './Question'
 import QuestionModel from './QuestionModel'
@@ -33,11 +34,11 @@ function App() {
     })
   }, [page])
 
-  let searchData
+  let searchData 
   if(query.trim().length > 1 && data.length > 0) {
-      searchData = data.filter(item => {
+      searchData = (data.filter(item => {
         return item.title.toLowerCase().includes(query.trim().toLowerCase()) || item.owner.display_name.toLowerCase().includes(query.trim().toLowerCase())
-  })
+  }))
   } else {
       searchData = data
   }
@@ -48,7 +49,9 @@ function App() {
          exact path='/'
          render={() => (
           <div className='home'>
-            <input 
+            <DebounceInput
+              minLength={2}
+              debounceTimeout={2000} 
               className='form-control searchbox' 
               type='text' 
               placeholder='search by author name or question title'

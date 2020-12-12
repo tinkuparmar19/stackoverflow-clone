@@ -6,30 +6,42 @@ function QuestionModel(props) {
     const {item} = props
     return (
             <div className='model d-flex flex-row justify-content-between'>
-                <div className='model-image-name d-flex flex-column justify-content-start'>
+                <div className='model-image-name d-flex flex-column justify-content-start align-items-center'>
                     <img src={item.owner.profile_image} className='model-image'alt=''/>
                     <p>{item.owner.display_name}</p>
                 </div>
                 <div className='model-title-tags d-flex flex-column justify-content-around'>
-                    <p className='model-title'>{item.title}</p>
+                    <p>{item.title}</p>
                     <div className='d-flex flex-row justify-content-around'>
-                        <p>views: {item.view_count}</p>
-                        <p>upvotes: {item.score}</p>
-                        <p>answerd?: {item.is_answered ? <span>yes</span> : <span>no</span>}</p>
+                        <div className='stats'>
+                            <i class="fas fa-eye i-icon"></i>
+                            <span>{item.view_count}</span>
+                            <p>views</p>
+                        </div>
+                        <div className='stats'>
+                            <i className="fas fa-caret-up i-icon"></i>
+                            <span>{item.score}</span>
+                            <p>upvotes</p>
+                        </div>
+                        <div className='stats'>
+                            {item.is_answered ? <i class="fas fa-check i-icon"></i> : <i className="fas fa-times-circle i-icon"></i>}                            
+                            <span>{item.is_answered ? 'yes' : 'no'}</span>
+                            <p>answerd?</p>
+                        </div>
                     </div>
-                    <div className='model-question-tags d-flex flex-row'>
+                    <div className='d-flex flex-row justify-content-center'>
                     {
                         item.tags.map(tag => {
                             return (
-                                <p className='tag'>#{tag}</p>
+                                <p className='tag' key={tag}>#{tag}</p>
                             )
                         })
                     }
                     </div>
-                    <a href={item.link} target='_blank' type='button' className='btn btn-primary mx-auto'>View In Stackoverflow</a>
+                    <a href={item.link} target='_blank' type='button' className='stack-link btn btn-primary mx-auto'>View In Stackoverflow</a>
                 </div>
-                <div className='model-quit d-flex justify-content-start'>
-                    <Link to='/'><i className="fas fa-times-circle"></i></Link>
+                <div className='d-flex justify-content-start'>
+                    <Link to='/'><i className="fas fa-times-circle cross"></i></Link>
                 </div>
             </div>
     )
